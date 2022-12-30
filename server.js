@@ -7,9 +7,7 @@ const port = process.env.PORT ?? 8383
 
 const ref = db.ref();
 
-app.use(cors({
-    origin: ["http://127.0.0.1:5173","http://127.0.0.1:5175", "https://thriving-croissant-288c47.netlify.app/"],
-}))
+app.use(cors())
 
 app.use(express.json())
 
