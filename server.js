@@ -3,7 +3,7 @@ import { auth, db } from './firebase.js'
 import cors from 'cors'
 
 const app = express()
-const port = 8383
+const port = process.env.PORT ?? 8383
 
 const ref = db.ref();
 
