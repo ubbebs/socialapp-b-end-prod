@@ -12,6 +12,8 @@ app.use(cors())
 app.use(express.json())
 
 app.post('/createuser', (req, res) => {
+    const category = "Account"
+    time = "0"
     const { email, password } = req.body
     auth
         .createUser({
@@ -24,6 +26,7 @@ app.post('/createuser', (req, res) => {
         .catch(() => {
             res.status(409).send()
         });
+    pushLog("User created", category, time, `Email: ${email}`)
 });
 
 app.get('/getMyFBData', (req, res) => {
@@ -66,7 +69,6 @@ app.get('/getPost', (req, res) => {
     const { authorid, key } = req.query
     const post = db.ref(`posts/${authorid}/${key}`)
     post.once('value', (snapshot) => {
-        console.log(snapshot.val())
         res.send(snapshot.val())
     })
 })
@@ -75,7 +77,6 @@ app.get('/getComments', (req, res) => {
     const { authorid, key } = req.query
     const comments = db.ref(`comments/${authorid}/${key}`)
     comments.once('value', (snapshot) => {
-        console.log(snapshot.val())
         res.send(snapshot.val())
     })
 })
@@ -138,15 +139,14 @@ app.get('/getFollowingPosts', (req, res) => {
 })
 
 app.get('/getAllUsers', (req, res) => {
-    console.log('ELO')
     const allprofiles = db.ref(`personalInfo`)
     allprofiles.once('value', (snapshot) => {
-        console.log(allprofiles)
         res.send(snapshot.val())
     })
 })
 
 app.post('/setPersonalInfo', (req, res) => {
+    const category = "PersonalInfo"
     const { accountName, displayName, description, timestamp, uid } = req.body
     const setPersonalInfo = ref.child(`personalInfo/${uid}`);
     setPersonalInfo.set({
@@ -156,37 +156,45 @@ app.post('/setPersonalInfo', (req, res) => {
         photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
         uid,
     })
+    pushLog("Set Personal Info", category, timestamp, `User id: ${uid}`)
     res.send()
 });
 
 app.post('/updateAvatar', (req, res) => {
+    const category = "UpdateAvatar"
     const { timestamp, uid } = req.body
     const updateAvatar = ref.child(`personalInfo/${uid}`);
     updateAvatar.update({
         photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
     })
+    pushLog("Update Avatar", category, timestamp, `User id: ${uid}`)
     res.send()
 });
 
 app.post('/updateDisplayName', (req, res) => {
+    const category = "UpdateDisplayName"
     const { displayName, uid } = req.body
     const updateDisplayName = ref.child(`personalInfo/${uid}`);
     updateDisplayName.update({
         displayName,
     })
+    pushLog("Update Display Name", category, displayName, `User id: ${uid}`)
     res.send()
 });
 
 app.post('/updateDescription', (req, res) => {
+    const category = "UpdateDescription"
     const { description, uid } = req.body
     const updateDescription = ref.child(`personalInfo/${uid}`);
     updateDescription.update({
         description,
     })
+    pushLog("Update Description", category, description, `User id: ${uid}`)
     res.send()
 });
 
 app.post('/addPost', (req, res) => {
+    const category = "Posts"
     const { description, userid, time } = req.body
     const url = `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/posts%2F${userid}%2F${time}?alt=media`
     const addPost = ref.child(`posts/${userid}/${time}`);
@@ -196,10 +204,12 @@ app.post('/addPost', (req, res) => {
         timestamp: time,
         authorid: userid,
     })
+    pushLog("Post added", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
 app.post('/addFollow', (req, res) => {
+    const category = "Follows"
     const { userid, myid } = req.body
     const followers = ref.child(`follows/${userid}/followers/${myid}`);
     const following = ref.child(`follows/${myid}/following/${userid}`);
@@ -222,13 +232,16 @@ app.post('/removeFollow', (req, res) => {
 });
 
 app.post('/removePost', (req, res) => {
+    const category = "RemovedPosts"
     const { userid, time } = req.body
     const removePost = ref.child(`posts/${userid}/${time}`)
     removePost.set(null)
+    pushLog("Post removed", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
 app.post('/addComment', (req, res) => {
+    const category = "AddedPosts"
     const { authorid, postid, comment, userid, time } = req.body
     const commentPost = ref.child(`comments/${authorid}/${postid}/${time}`);
     commentPost.set({
@@ -236,6 +249,7 @@ app.post('/addComment', (req, res) => {
         timestamp: time,
         authorid: userid,
     })
+    pushLog("Post added", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
