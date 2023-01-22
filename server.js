@@ -26,7 +26,6 @@ app.post('/createuser', (req, res) => {
         .catch(() => {
             res.status(409).send()
         });
-    pushLog("User created", category, time, `Email: ${email}`)
 });
 
 app.get('/getMyFBData', (req, res) => {
@@ -156,7 +155,6 @@ app.post('/setPersonalInfo', (req, res) => {
         photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
         uid,
     })
-    pushLog("Set Personal Info", category, timestamp, `User id: ${uid}`)
     res.send()
 });
 
@@ -167,7 +165,6 @@ app.post('/updateAvatar', (req, res) => {
     updateAvatar.update({
         photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
     })
-    pushLog("Update Avatar", category, timestamp, `User id: ${uid}`)
     res.send()
 });
 
@@ -178,7 +175,6 @@ app.post('/updateDisplayName', (req, res) => {
     updateDisplayName.update({
         displayName,
     })
-    pushLog("Update Display Name", category, displayName, `User id: ${uid}`)
     res.send()
 });
 
@@ -189,7 +185,6 @@ app.post('/updateDescription', (req, res) => {
     updateDescription.update({
         description,
     })
-    pushLog("Update Description", category, description, `User id: ${uid}`)
     res.send()
 });
 
@@ -204,7 +199,6 @@ app.post('/addPost', (req, res) => {
         timestamp: time,
         authorid: userid,
     })
-    pushLog("Post added", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
@@ -236,7 +230,6 @@ app.post('/removePost', (req, res) => {
     const { userid, time } = req.body
     const removePost = ref.child(`posts/${userid}/${time}`)
     removePost.set(null)
-    pushLog("Post removed", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
@@ -249,7 +242,6 @@ app.post('/addComment', (req, res) => {
         timestamp: time,
         authorid: userid,
     })
-    pushLog("Post added", category, time, `Authorid: ${userid}`)
     res.send()
 });
 
