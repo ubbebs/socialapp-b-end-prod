@@ -12,7 +12,6 @@ app.use(cors())
 app.use(express.json())
 
 app.post('/createuser', (req, res) => {
-    const category = "Account"
     time = "0"
     const { email, password } = req.body
     auth
@@ -145,7 +144,6 @@ app.get('/getAllUsers', (req, res) => {
 })
 
 app.post('/setPersonalInfo', (req, res) => {
-    const category = "PersonalInfo"
     const { accountName, displayName, description, timestamp, uid } = req.body
     const setPersonalInfo = ref.child(`personalInfo/${uid}`);
     setPersonalInfo.set({
@@ -159,7 +157,6 @@ app.post('/setPersonalInfo', (req, res) => {
 });
 
 app.post('/updateAvatar', (req, res) => {
-    const category = "UpdateAvatar"
     const { timestamp, uid } = req.body
     const updateAvatar = ref.child(`personalInfo/${uid}`);
     updateAvatar.update({
@@ -169,7 +166,6 @@ app.post('/updateAvatar', (req, res) => {
 });
 
 app.post('/updateDisplayName', (req, res) => {
-    const category = "UpdateDisplayName"
     const { displayName, uid } = req.body
     const updateDisplayName = ref.child(`personalInfo/${uid}`);
     updateDisplayName.update({
@@ -179,7 +175,6 @@ app.post('/updateDisplayName', (req, res) => {
 });
 
 app.post('/updateDescription', (req, res) => {
-    const category = "UpdateDescription"
     const { description, uid } = req.body
     const updateDescription = ref.child(`personalInfo/${uid}`);
     updateDescription.update({
@@ -189,7 +184,6 @@ app.post('/updateDescription', (req, res) => {
 });
 
 app.post('/addPost', (req, res) => {
-    const category = "Posts"
     const { description, userid, time } = req.body
     const url = `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/posts%2F${userid}%2F${time}?alt=media`
     const addPost = ref.child(`posts/${userid}/${time}`);
@@ -203,7 +197,6 @@ app.post('/addPost', (req, res) => {
 });
 
 app.post('/addFollow', (req, res) => {
-    const category = "Follows"
     const { userid, myid } = req.body
     const followers = ref.child(`follows/${userid}/followers/${myid}`);
     const following = ref.child(`follows/${myid}/following/${userid}`);
@@ -226,7 +219,6 @@ app.post('/removeFollow', (req, res) => {
 });
 
 app.post('/removePost', (req, res) => {
-    const category = "RemovedPosts"
     const { userid, time } = req.body
     const removePost = ref.child(`posts/${userid}/${time}`)
     removePost.set(null)
@@ -234,7 +226,6 @@ app.post('/removePost', (req, res) => {
 });
 
 app.post('/addComment', (req, res) => {
-    const category = "AddedPosts"
     const { authorid, postid, comment, userid, time } = req.body
     const commentPost = ref.child(`comments/${authorid}/${postid}/${time}`);
     commentPost.set({
