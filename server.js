@@ -150,7 +150,7 @@ app.post('/setPersonalInfo', (req, res) => {
         accountName,
         description,
         displayName,
-        photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
+        photoURL: `https://firebasestorage.googleapis.com/v0/b/${process.env.PROJECT_ID}.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
         uid,
     })
     res.send()
@@ -160,7 +160,7 @@ app.post('/updateAvatar', (req, res) => {
     const { timestamp, uid } = req.body
     const updateAvatar = ref.child(`personalInfo/${uid}`);
     updateAvatar.update({
-        photoURL: `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
+        photoURL: `https://firebasestorage.googleapis.com/v0/b/${process.env.PROJECT_ID}.appspot.com/o/avatar%2F${uid}_${timestamp}?alt=media`,
     })
     res.send()
 });
@@ -185,7 +185,7 @@ app.post('/updateDescription', (req, res) => {
 
 app.post('/addPost', (req, res) => {
     const { description, userid, time } = req.body
-    const url = `https://firebasestorage.googleapis.com/v0/b/socialapp-c3f3f.appspot.com/o/posts%2F${userid}%2F${time}?alt=media`
+    const url = `https://firebasestorage.googleapis.com/v0/b/${process.env.PROJECT_ID}.appspot.com/o/posts%2F${userid}%2F${time}?alt=media`
     const addPost = ref.child(`posts/${userid}/${time}`);
     addPost.set({
         description: description,

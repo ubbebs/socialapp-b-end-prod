@@ -20,7 +20,7 @@ const serviceAccount = {
 
 initializeApp({
     credential: cert(serviceAccount),
-    databaseURL: "https://socialapp-c3f3f-default-rtdb.europe-west1.firebasedatabase.app"
+    databaseURL: process.env.DATABASE_URL,
 })
 
 export const auth = getAuth()
